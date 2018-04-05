@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4B1E3C2520756E5700B3FF69 /* CoursesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B1E3C2420756E5700B3FF69 /* CoursesVC.swift */; };
+		4B7FEB11206D32B300D64387 /* providerVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7FEB10206D32B300D64387 /* providerVC.swift */; };
+		4B7FEB14206D52C500D64387 /* OccupationVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7FEB13206D52C400D64387 /* OccupationVC.swift */; };
+		4B7FEB16206D736500D64387 /* preferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7FEB15206D736500D64387 /* preferences.swift */; };
+		4B7FEB18206D80FD00D64387 /* reportsVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4B7FEB17206D80FD00D64387 /* reportsVC.swift */; };
 		4BCC4C5F2069F066008C8F8B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC4C5E2069F066008C8F8B /* AppDelegate.swift */; };
 		4BCC4C612069F066008C8F8B /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4BCC4C602069F066008C8F8B /* ViewController.swift */; };
 		4BCC4C632069F066008C8F8B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4BCC4C622069F066008C8F8B /* Assets.xcassets */; };
@@ -14,6 +19,11 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		4B1E3C2420756E5700B3FF69 /* CoursesVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoursesVC.swift; sourceTree = "<group>"; };
+		4B7FEB10206D32B300D64387 /* providerVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = providerVC.swift; sourceTree = "<group>"; };
+		4B7FEB13206D52C400D64387 /* OccupationVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OccupationVC.swift; sourceTree = "<group>"; };
+		4B7FEB15206D736500D64387 /* preferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = preferences.swift; sourceTree = "<group>"; };
+		4B7FEB17206D80FD00D64387 /* reportsVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = reportsVC.swift; sourceTree = "<group>"; };
 		4BCC4C5B2069F066008C8F8B /* DBPR Upload Tool.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DBPR Upload Tool.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4BCC4C5E2069F066008C8F8B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		4BCC4C602069F066008C8F8B /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -53,12 +63,17 @@
 		4BCC4C5D2069F066008C8F8B /* DBPR Upload Tool */ = {
 			isa = PBXGroup;
 			children = (
+				4B7FEB17206D80FD00D64387 /* reportsVC.swift */,
+				4B7FEB13206D52C400D64387 /* OccupationVC.swift */,
 				4BCC4C5E2069F066008C8F8B /* AppDelegate.swift */,
 				4BCC4C602069F066008C8F8B /* ViewController.swift */,
+				4B7FEB10206D32B300D64387 /* providerVC.swift */,
 				4BCC4C622069F066008C8F8B /* Assets.xcassets */,
 				4BCC4C642069F066008C8F8B /* Main.storyboard */,
 				4BCC4C672069F066008C8F8B /* Info.plist */,
 				4BCC4C682069F066008C8F8B /* DBPR_Upload_Tool.entitlements */,
+				4B7FEB15206D736500D64387 /* preferences.swift */,
+				4B1E3C2420756E5700B3FF69 /* CoursesVC.swift */,
 			);
 			path = "DBPR Upload Tool";
 			sourceTree = "<group>";
@@ -136,6 +151,11 @@
 			files = (
 				4BCC4C612069F066008C8F8B /* ViewController.swift in Sources */,
 				4BCC4C5F2069F066008C8F8B /* AppDelegate.swift in Sources */,
+				4B1E3C2520756E5700B3FF69 /* CoursesVC.swift in Sources */,
+				4B7FEB18206D80FD00D64387 /* reportsVC.swift in Sources */,
+				4B7FEB16206D736500D64387 /* preferences.swift in Sources */,
+				4B7FEB11206D32B300D64387 /* providerVC.swift in Sources */,
+				4B7FEB14206D52C500D64387 /* OccupationVC.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
