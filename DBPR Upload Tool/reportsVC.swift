@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class reportsVC: NSViewController {
+class reportsVC: NSViewController , NSDatePickerCellDelegate, NSTextFieldDelegate {
     
      let defaults = UserDefaults.standard
     override func viewWillLayout() {
@@ -18,14 +18,17 @@ class reportsVC: NSViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        calendarPicker.dateValue = Date()
+        tfDate.placeholderString = dateFormatter()
+        print("load dateFormatter()",dateFormatter())
 //         defaults.string(forKey: "providerEmailDef")
         // Do view setup here.
       
-        loadDefaults()
-        setupOccList()
-        setupCourseList()
-        buildOccPopUp()
-        buildCoursePopUp()
+      //  loadDefaults()
+//        setupOccList()
+//        setupCourseList()
+//        buildOccPopUp()
+//        buildCoursePopUp()
         
     }
     override func viewWillAppear() {
@@ -38,18 +41,19 @@ class reportsVC: NSViewController {
         lblProviderBum.stringValue = pNum
         lblProviderName.stringValue = PName
         lblPassCode.stringValue = pCode
+        
     }
     func loadDefaults() {
         
         code = defaults.array(forKey: "codeDefaults")!
         name = defaults.array(forKey: "nameDefaults")!
-        courseNum = defaults.array(forKey: "courseNumDefaults")!
-        courseName = defaults.array(forKey: "courseNameDefaults")!
+        if let loadCourses = defaults.array(forKey: "coursesDefaults") {courses = loadCourses as! [[String : String]] } else {courses.append(["number":"###", "name":"add courses on COURSES tab"])}
+//        courseName = defaults.array(forKey: "courseNameDefaults")!
         pNum = defaults.string(forKey: "providerNumDef")!
         PName = defaults.string(forKey: "providerNameDef")!
         pCode = defaults.string(forKey: "passCodeDef")!
         print(code)
-        print(courseNum)
+        print(courses)
     }
 
     
@@ -62,13 +66,32 @@ class reportsVC: NSViewController {
     @IBOutlet weak var coursePopUp: NSPopUpButton!
     @IBOutlet weak var occupationPopUp: NSPopUpButton!
    
+
     @IBOutlet weak var tfLicenseNumber: NSTextField!
     @IBOutlet weak var tfFirstName: NSTextField!
     @IBOutlet weak var tfMiddleInitial: NSTextField!
     @IBOutlet weak var tfLastName: NSTextField!
     @IBOutlet weak var tfNumLicenses: NSTextField!
-    @IBOutlet weak var tfDate: NSDatePicker!
     
+   
+    @IBAction func btnShowCalendar(_ sender: NSButton) {
+        print("clicked")
+        calendarView.isHidden = false
+    }
+   
+    @IBOutlet weak var tfDate: NSTextField!
+    @IBOutlet weak var calendarView: NSView!
+    
+    @IBOutlet weak var calendarPicker: NSDatePicker!
+  
+    @IBAction func clickDate(_ sender: NSDatePicker) {
+        print(calendarPicker.dateValue)
+       
+        tfDate.stringValue = dateFormatter()
+        calendarView.isHidden = true
+    
+    }
+ 
     var pNum = ""
     var PName = ""
     var pCode = ""
@@ -79,20 +102,21 @@ class reportsVC: NSViewController {
     var numOfLicenses = 0
     var code = [Any]()
     var name = [Any]()
-    var courseNum = [Any]()
+    var courses = [[String:String]]()
     var courseName = [Any]()
+    var courseDate = String()
     var created = [String]()
     var occArr = [String]()
     var courseArr = [String]()
     var reportStep = 0
     
+    @IBOutlet var ibDateFormatter: DateFormatter!
     @IBAction func btnAddProvider(_ sender: NSButton) {
     }
     
     @IBAction func btnAddCourse(_ sender: NSButton) {
     }
-    @IBAction func btnAddCode(_ sender: NSButton) {
-    }
+    
     @IBAction func btnAddStudent(_ sender: NSButton) {
     }
     @IBAction func btnEndOfRecord(_ sender: NSButton) {
@@ -119,11 +143,11 @@ class reportsVC: NSViewController {
 
     func setupCourseList() {
         courseArr = [String]()
-        print(courseNum.count)
-        for i in 0...(courseNum.count-1) {
-//            mergeCourseArr(number: courseNum[i] as! String, name: courseName[i] as! String)
-            let newCourse = "\(courseNum[i])  \(courseName[i])"
+        print(courses.count)
+        for element in courses {
+            let newCourse = "\(element["number"]  ?? "###")    \(element["name"] ?? "Add courses on Courses Tab")"
             courseArr.append(newCourse);
+            
         }
         print(courseArr)
         
@@ -168,6 +192,96 @@ class reportsVC: NSViewController {
         midInit = tfMiddleInitial.stringValue
         lastName = tfMiddleInitial.stringValue
         
+    }
+    func numberFormatter(numString: String) -> String {
+        let nsNumber = NSNumber(value: Int(numString)!)
+        let numberFormatter = NumberFormatter()
+        numberFormatter.minimumIntegerDigits = 7
+        numberFormatter.maximumIntegerDigits = 7
+        numberFormatter.paddingPosition = .beforePrefix
+        numberFormatter.paddingCharacter = "0"
+        let formattedNum = numberFormatter.string(from: nsNumber)
+        return formattedNum!
+    }
+    func dateFormatter() -> String {
+        let date = calendarPicker.dateValue
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        let dateString = dateFormatter.string(from: date as Date)
+        print("Custom date  =  \(dateString)")
+        return dateString
+    }
+    
+    func dateToDate(date: Date) -> Date {
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "MM/dd/yyyy"
+        let dateString = dateFormatter.string(from: date as Date)
+        let dateDate = dateFormatter.date(from: dateString)
+        print("dateDate = \(dateDate)")
+        return dateDate!
+    }
+    
+    override func controlTextDidEndEditing(_ obj: Notification) {
+        if tfDate.stringValue.count > 0 {
+            isValidDate(dateString: tfDate.stringValue)
+            
+        }
+        if tfLicenseNumber.stringValue.count > 0 {
+            tfLicenseNumber.stringValue = numberFormatter(numString: tfLicenseNumber.stringValue)
+            
+        }
+        
+    }
+    override func controlTextDidChange(_ obj: Notification) {
+        print("textChanged")
+        if tfLicenseNumber.stringValue.count > 7 { runMyAlert(alertMessage: "License Number Must Be 7 Or Fewer Digits")}
+        
+        let dateSet: NSCharacterSet = NSCharacterSet(charactersIn: "0123456789/").inverted as NSCharacterSet
+        let numberSet: NSCharacterSet = NSCharacterSet(charactersIn: "0123456789").inverted as NSCharacterSet
+         self.tfDate.stringValue =  (self.tfDate.stringValue.components(separatedBy: dateSet as CharacterSet) as NSArray).componentsJoined(by: "")
+        self.tfLicenseNumber.stringValue =  (self.tfLicenseNumber.stringValue.components(separatedBy: numberSet as CharacterSet) as NSArray).componentsJoined(by: "")
+        self.tfNumLicenses.stringValue =  (self.tfNumLicenses.stringValue.components(separatedBy: numberSet as CharacterSet) as NSArray).componentsJoined(by: "")
+        
+        self.tfFirstName.stringValue =   tfFirstName.stringValue.uppercased()
+        self.tfMiddleInitial.stringValue =   tfMiddleInitial.stringValue.uppercased()
+        self.tfLastName.stringValue =   tfLastName.stringValue.uppercased()
+        
+        
+    }
+    
+    func runMyAlert( alertMessage: String){
+        
+        //var myWindow = NSWindow.self
+        let alert = NSAlert()
+        alert.messageText = "FORMAT ERROR"
+        alert.addButton(withTitle: "OK")
+        alert.informativeText = alertMessage
+        alert.runModal()
+    }
+    
+    func isValidDate(dateString: String) -> Bool {
+        let dateFormatterGet = DateFormatter()
+        
+        dateFormatterGet.dateFormat = "MM/dd/yyyy"
+        if dateFormatterGet.date(from: dateString) != nil {
+            calendarView.isHidden = true
+
+            //date parsing succeeded, if you need to do additional logic, replace _ with some variable name i.e date
+            if tfDate.stringValue.count != 10 {
+                runMyAlert(alertMessage: "Date format should be mm/dd/yyyy")
+                calendarView.isHidden = false
+            tfDate.stringValue = ""
+            }
+            
+            return true
+        } else {
+            // Invalid date
+            runMyAlert(alertMessage: "Date format should be mm/dd/yyyy")
+            tfDate.stringValue = ""
+            calendarView.isHidden = false
+            return false
+        }
     }
     
     

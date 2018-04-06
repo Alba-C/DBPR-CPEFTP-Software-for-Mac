@@ -8,7 +8,7 @@
 
 import Cocoa
 
-class providerVC: NSViewController {
+class providerVC: NSViewController, NSTextFieldDelegate {
     
     let defaults = UserDefaults.standard
     
@@ -92,6 +92,26 @@ class providerVC: NSViewController {
     var passCode = "0000 Pass Code"
     var providerEmail = "Provider Email"
     
+    override func controlTextDidChange(_ obj: Notification) {
+        print("textChanged")
+        if tfProviderName.stringValue.count > 45 { runMyAlert(alertMessage: "Provider Name Must Be Less Than 45 Characters")}
+        if tfProviderEmail.stringValue.count > 73 {runMyAlert(alertMessage: "Email Address Must Be Less Than 73 Characters")}
+        let characterSet: NSCharacterSet = NSCharacterSet(charactersIn: " abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLKMNOPQRSTUVWXYZ0123456789-").inverted as NSCharacterSet
+        let numberSet: NSCharacterSet = NSCharacterSet(charactersIn: "0123456789").inverted as NSCharacterSet
+        self.tfProviderName.stringValue =  (self.tfProviderName.stringValue.components(separatedBy: characterSet as CharacterSet) as NSArray).componentsJoined(by: "").uppercased()
+        self.tfProviderNum.stringValue =  (self.tfProviderNum.stringValue.components(separatedBy: numberSet as CharacterSet) as NSArray).componentsJoined(by: "")
+        self.tfPassCode.stringValue = (self.tfPassCode.stringValue.components(separatedBy: numberSet as CharacterSet) as NSArray).componentsJoined(by: "")
+       
+    }
     
+    func runMyAlert( alertMessage: String){
+        
+        //var myWindow = NSWindow.self
+        let alert = NSAlert()
+        alert.messageText = "FORMAT ERROR"
+        alert.addButton(withTitle: "OK")
+        alert.informativeText = alertMessage
+        alert.runModal()
+    }
     
 }
